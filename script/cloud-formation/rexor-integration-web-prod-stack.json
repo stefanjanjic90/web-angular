@@ -1,0 +1,110 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+
+    "Parameters": {
+        "DomainName": {
+            "Description": "Domain name for the webapp.",
+            "Type": "String",
+            "Default": "jira-rexor-integration.company-domain.com"
+        },
+        "WebsiteEndpoint": {
+            "Description": "Website S3 endpoint for eu-west-1 region.",
+            "Type": "String",
+            "Default": "s3-website-eu-west-1.amazonaws.com"
+        },
+        "S3HostedZoneID":{
+            "Description": "Id of the hosted zone for S3 in eu-west-1 region.",
+            "Type": "String",
+            "Default": "Z1BKCTXD74EZPE"
+        }
+    },
+    "Resources": {
+        "RexorIntegrationWebS3Prod": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": {
+                    "Ref": "DomainName"
+                },
+                "AccessControl": "PublicRead",
+                "WebsiteConfiguration": {
+                    "IndexDocument": "index.html",
+                    "ErrorDocument": "error.html"
+                },
+                "CorsConfiguration": {
+                    "CorsRules": [
+                        {
+                            "AllowedHeaders": ["*"],
+                            "AllowedMethods": ["GET","POST","PUT","DELETE","HEAD"],
+                            "AllowedOrigins": [{"Fn::ImportValue": "rexor-integration-service-prod-api-gateway-url" }],
+                            "Id": "rexor-integration-web-prod-cors-rule-1"
+                        }
+                    ]
+                }
+            }
+        },
+        "BucketPolicy": {
+            "Type": "AWS::S3::BucketPolicy",
+            "DependsOn":  "RexorIntegrationWebS3Prod",
+            "Properties": {
+                "PolicyDocument": {
+                    "Id": "S3BucketRefererReadPolicy",
+                    "Version": "2012-10-17",
+                    "Statement": [
+                        {
+                            "Sid": "PublicReadForGetBucketObjects",
+                            "Effect": "Allow",
+                            "Principal": "*",
+                            "Action": "s3:GetObject",
+                            "Condition": {
+                                "StringLike": {
+                                    "aws:Referer": [
+                                        {"Fn::Join": ["", [ {"Ref": "DomainName"}, "/*"]]},
+                                        {"Fn::Join": ["", ["http://", {"Ref": "DomainName"}, "/*"]]},
+                                        {"Fn::Join": ["", ["https://", {"Ref": "DomainName"}, "/*"]]}
+                                    ]
+                                }
+                            },
+                            "Resource": {
+                                "Fn::Join": ["", ["arn:aws:s3:::", { "Ref": "RexorIntegrationWebS3Prod"}, "/*"]]
+                            }
+                        }
+                    ]
+                },
+                "Bucket": { "Ref": "RexorIntegrationWebS3Prod" }
+            }
+        },
+        "RexorIntegrationDnsMapping": {
+            "Type": "AWS::Route53::RecordSetGroup",
+            "DependsOn":  "RexorIntegrationWebS3Prod",
+            "Properties": {
+                "HostedZoneName": {
+                    "Fn::Join": ["", [{"Ref": "DomainName"}, "."]]
+                },
+                "RecordSets": [
+                    {
+                        "Name":{ "Ref": "DomainName" },
+                        "Type": "A",
+                        "AliasTarget": {
+                            "HostedZoneId": {"Ref":"S3HostedZoneID"},
+                            "DNSName": { "Ref": "WebsiteEndpoint" }
+                            }
+                    }
+                ]
+            }
+        }
+    },
+    "Outputs": {
+        "WebappURL": {
+            "Value": {
+                "Fn::Join": ["", ["http://", {"Ref": "DomainName"}]]
+            },
+            "Description": "Production URL for webapp."
+        },
+        "ApiBaseUrl":{
+            "Value":{
+                "Fn::ImportValue": "rexor-integration-service-prod-api-gateway-url"
+            },
+            "Description": "Base url for API calls."
+        }
+    }
+}

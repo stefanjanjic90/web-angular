@@ -1,0 +1,62 @@
+{
+    "AWSTemplateFormatVersion": "2010-09-09",
+    "Mappings": {
+        "RegionMap": {
+            "eu-west-1": {
+                "S3hostedzoneID": "Z1BKCTXD74EZPE"
+            }
+        }
+    },
+    "Resources": {
+        "RexorIntegrationWebS3Stage": {
+            "Type": "AWS::S3::Bucket",
+            "Properties": {
+                "BucketName": "rexor-integration-web-stage",
+                "AccessControl": "PublicRead",
+                "WebsiteConfiguration": {
+                    "IndexDocument": "index.html",
+                    "ErrorDocument": "error.html"
+                },
+                "CorsConfiguration": {
+                    "CorsRules": [
+                        {
+                            "AllowedHeaders": [
+                                "*"
+                            ],
+                            "AllowedMethods": [
+                                "GET",
+                                "POST",
+                                "PUT",
+                                "DELETE",
+                                "HEAD"
+                            ],
+                            "AllowedOrigins": [
+                                {
+                                    "Fn::ImportValue": "rexor-integration-service-stage-api-gateway-url"
+                                }
+                            ],
+                            "Id": "rexor-integration-web-stege-cors-rule-1"
+                        }
+                    ]
+                }
+            }
+        }
+    },
+    "Outputs": {
+        "WebappURL": {
+            "Value": {
+                "Fn::GetAtt": [
+                    "RexorIntegrationWebS3Stage",
+                    "WebsiteURL"
+                ]
+            },
+            "Description": "Development URL for webapp."
+        },
+        "ApiBaseUrl": {
+            "Value": {
+                "Fn::ImportValue": "rexor-integration-service-stage-api-gateway-url"
+            },
+            "Description": "Base url for API calls."
+        }
+    }
+}

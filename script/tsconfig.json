@@ -1,0 +1,9 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "rootDir": "../script/",
+        "outDir": "../script/dist",
+        "module": "commonjs",
+        "target": "es5"
+    }
+}
