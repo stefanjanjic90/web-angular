@@ -1,0 +1,49 @@
+<ng-progress></ng-progress>
+<div class="row">
+  <div class="col-12 mt-4">
+    <h2>Absence Setup</h2>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 mt-4">
+    <h3 class="font-italic">Absence properties</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="form-group col-2 mt-4">
+    <label for="classificationId">Classification ID:</label>
+    <input type="text" class="form-control" [ngModel]="classificationId" (ngModelChange)="onClassificationIdChange($event)" id="classificationId">
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 mt-4">
+    <h3 class="font-italic">Map Issues</h3>
+  </div>
+</div>
+<div class="mt-4">
+  <app-one-to-many-selector [settings]='mappingSettigns' [data]="mappingData" (parentSelectionChange)="updateTimeCodeSelection($event)"
+    (childrenSelectionChange)="updateIssueSelection($event)"></app-one-to-many-selector>
+</div>
+
+<div class="row mt-4">
+  <div class="col-12">
+    <button class="btn btn-primary float-right" (click)="addMappings($event)"  [disabled]="mapIssuesButtonDisabled" type="button">Add</button>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-12">
+    <h4>Mapped Issues</h4>
+    <div class="border border-secondary">
+      <ng2-smart-table [settings]="mappedIssueTableSettings" [source]="mappedIssueTableSource" class="table table-striped"></ng2-smart-table>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-12">
+    <button class="btn btn-secondary float-left" [routerLink]="['/project']" type="button">Back</button>
+    <button class="btn btn-success float-right" type="button" [disabled]="saveAbsenceButtonDisabled" (click)="saveAbsence($event)">Save</button>
+    <button class="btn btn-danger float-right mr-2" type="button" [disabled]="deleteAbsenceButtonDisabled" (click)="deleteAbsence($event)">Delete</button>
+  </div>
+</div>

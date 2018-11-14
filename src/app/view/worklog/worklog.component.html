@@ -1,0 +1,86 @@
+<ng-progress></ng-progress>
+<div class="row">
+    <div class="col">
+        <form>
+            <div class="container">
+                <div class="row">
+                    <div class="form-group col-2">
+                        <div class="row">
+                            <div class="col">
+                                <label for="fromDate">Date From:</label>
+                                <label class="form-control" id="fromDate">{{selectedFromDate}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col">
+                                <label for="dateTo">Date To:</label>
+                                <label class="form-control" id="dateTo">{{selectedToDate}}</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-5">
+                                <button type="submit" class="btn btn-primary" (click)="toogleDatePickerAction()">Select Period</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-2" [ngStyle]="getVisibilityStyle()">
+                        <div>
+                            <app-ngbd-datepicker-range (sendDates)="selectPeriod($event)"></app-ngbd-datepicker-range>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-3">
+                        <div class="row">
+                            <div class="col-8">
+                                <label for="projectKey">Project Key:</label>
+                                <select class="form-control" id="project" [ngModel]="selectedProject" (ngModelChange)="onProjectSelect($event)" name="project">
+                                    <option *ngFor="let project of projects" [ngValue]="project">{{project.displayName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-8">
+                                <label for="user">User:</label>
+                                <select class="form-control" id="user" [(ngModel)]="selectedUser" [disabled]="selectUserActionDisabled" name="user">
+                                    <option *ngFor="let user of users" [ngValue]="user" name="option">{{user.displayName}}</option>
+                                </select>
+                                <div class="mt-2">
+                                    <button type="submit" class="btn btn-primary" (click)="getViewData()">Get Data</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row mt-1">
+    <div class="col-12">
+        <span class="h4 pull-left">Jira Worklogs</span>
+        <button class="btn btn-info float-right" type="button" (click)="deselectAllWorklogs()">Deselect All</button>
+        <button class="btn btn-info float-right  mr-1" type="button" (click)="selectAllWorklogs()">Select All</button>
+    </div>
+</div>
+<div class="row mt-1">
+    <div class="col-12">
+        <div class="border border-secondary">
+            <ng2-smart-table [settings]="worklogsTableSettings" [source]="worklogsTableSource" class="table table-striped"></ng2-smart-table>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <button class="btn btn-primary float-right" [disabled]="transferWorklogsActionDisabled" type="button" (click)="transferWorklogs()">Transfer</button>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <h4>Transferred Worklogs</h4>
+        <div class="border border-secondary">
+            <ng2-smart-table [settings]="transferredWorklogsTableSettings" [source]="transferredWorklogsTableSource" class="table table-striped"></ng2-smart-table>
+        </div>
+    </div>
+</div>

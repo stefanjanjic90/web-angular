@@ -1,0 +1,23 @@
+<ng-progress></ng-progress>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h4>Jira projects</h4>
+        <div class="border border-secondary">
+            <ng2-smart-table [settings]="unmappedProjectTableSettings" [source]="unmappedProjectTableSource" class="table table-striped"></ng2-smart-table>
+        </div>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <button type="button" class="btn btn-primary float-right" [routerLink]="['/project/mapping']">Map projects</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 mt-4">
+        <h4>Mapped projects</h4>
+        <div class="border border-secondary">
+            <ng2-smart-table [settings]="mappedProjectTableSettings" [source]="mappedProjectTableSource" class="table table-striped"></ng2-smart-table>
+        </div>
+    </div>
+</div>

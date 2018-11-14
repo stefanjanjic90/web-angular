@@ -1,0 +1,2 @@
+<input [ngClass]="cssClass" type="{{type}}" [name]="name" [attr.name]="name" [attr.checked]="checked ? 'checked' : null"
+    [ngModel]="inputValue" (ngModelChange)="onInputValueChange($event)" (click)="onClick()" [disabled]="disable" />

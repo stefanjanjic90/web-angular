@@ -1,0 +1,23 @@
+<ng-progress></ng-progress>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <button class="btn btn-primary float-right" type="button" (click)="getViewData()">Refresh</button>
+    </div>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <h4>Worklog transfer queue</h4>
+        <div class="border border-secondary">
+            <ng2-smart-table [settings]="readyWorklogTransferTableSettings" [source]="readyWorklogTransferTableSource" class="table table-striped"></ng2-smart-table>
+        </div>
+    </div>
+</div>
+<div class="row  mt-4">
+    <div class="col-12 mt-4">
+        <h4>Failed worklog transfers</h4>
+        <div class="border border-secondary">
+            <ng2-smart-table [settings]="failedWorklogTransferTableSettings" [source]="failedWorklogTransferTableSource" class="table table-striped"></ng2-smart-table>
+        </div>
+    </div>
+</div>

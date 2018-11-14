@@ -1,0 +1,30 @@
+<ng-progress></ng-progress>
+<div class="row">
+    <div class="col-12 mt-4">
+        <h3>Map Issue Types</h3>
+    </div>
+</div>
+<div class="mt-4">
+    <app-one-to-many-selector [settings]='mappingSettigns' [data]="mappingData" (parentSelectionChange)="updateProjectActivitySelection($event)"
+        (childrenSelectionChange)="updateIssueTypeSelection($event)"></app-one-to-many-selector>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <button class="btn btn-primary float-right" [disabled]="mapIssueTypesButtonDisabled" type="button" (click)="addMappings($event)">Map Issue Types</button>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <h4>Mapped Issue Types</h4>
+        <div class="border border-secondary">
+            <ng2-smart-table [settings]="mappedIssueTypeTableSettings" [source]="mappedIssueTypeTableSource" class="table table-striped"></ng2-smart-table>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <button class="btn btn-secondary float-left" [routerLink]="['/project']" type="button">Back</button>
+    </div>
+</div>

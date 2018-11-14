@@ -1,0 +1,14 @@
+<div class="row">
+    <div class="col-6">
+        <h4>{{settings.childName}}</h4>
+        <div class="border border-secondary">
+            <ng2-smart-table [settings]="settings.childTable" [source]="childTableSource" class="table table-striped"></ng2-smart-table>
+        </div>
+    </div>
+    <div class="col-6">
+        <h4>{{settings.parentName}}</h4>
+        <div class="border border-secondary">
+            <ng2-smart-table [settings]="settings.parentTable" [source]="parentTableSoruce" class="table table-striped"></ng2-smart-table>
+        </div>
+    </div>
+</div>

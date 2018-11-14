@@ -1,0 +1,16 @@
+<ng-progress></ng-progress>
+<div class="row mt-4">
+    <div class="col-12">
+        <h3>Map Projects</h3>
+    </div>
+</div>
+<div class="mt-4">
+    <app-one-to-many-selector [settings]='mappingSettigns' [data]="mappingData" (parentSelectionChange)="updateRexorProjectSelection($event)"
+        (childrenSelectionChange)="updateJiraProjecstSelection($event)"></app-one-to-many-selector>
+</div>
+<div class="row mt-4">
+    <div class="col-12">
+        <button class="btn btn-secondary float-left" [routerLink]="['/project']" type="button">Back</button>
+        <button class="btn btn-primary float-right" [disabled]="mapProjectsButtonDisabled" type="button" (click)="addMappings($event)">Map Projects</button>
+    </div>
+</div>
